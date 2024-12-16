@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+bool isPrime(int num) {
+    if (num <= 1) return false; 
+    for (int i = 2; i <= std::sqrt(num); ++i) {
+        if (num % i == 0) return false; 
+    }
+    return true;
+}
+std::vector<int> rearrangeArray(std::vector<int>& arr) {
+    std::vector<int> primes;
+    std::vector<int> nonPrimes;
+    for (int num : arr) {
+        if (isPrime(num)) {
+            primes.push_back(num);
+        } else {
+            nonPrimes.push_back(num);
+        }
+    }
+    for (int i = 0; i < primes.size(); ++i) {
+        for (int j = i + 1; j < primes.size(); ++j) {
+            if (primes[i] < primes[j]) {
+                int temp = primes[i];
+                primes[i] = primes[j];
+                primes[j] = temp;
+            }
+        }
+    }
+
+    
+    for (int i = 0; i < nonPrimes.size(); ++i) {
+        for (int j = i + 1; j < nonPrimes.size(); ++j) {
+            if (nonPrimes[i] < nonPrimes[j]) {
+                int temp = nonPrimes[i];
+                nonPrimes[i] = nonPrimes[j];
+                nonPrimes[j] = temp;
+            }
+        }
+    }
+
+    
+    std::vector<int> result;
+    if (!primes.empty()) {
+        result.push_back(primes[0]); 
+        primes.erase(primes.begin()); 
+    }
+
+    
+    for (int num : nonPrimes) {
+        result.push_back(num);
+    }
+
+    
+    if (!primes.empty()) {
+        result.push_back(primes[primes.size() - 1]); 
+    }
+
+    return result;
+}
+
+int main() {
+    
+    std::vector<int> arr1 = {5, 1, 8, 11, 2};
+    std::vector<int> result1 = rearrangeArray(arr1);
+
+    std::cout << "Output 1: ";
+    for (int num : result1) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    
+    std::vector<int> arr2 = {1, 6, 4, 13, 9, 3};
+    std::vector<int> result2 = rearrangeArray(arr2);
+
+    std::cout << "Output 2: ";
+    for (int num : result2) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
